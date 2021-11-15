@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/15 23:19:44 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/15 23:24:30 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,7 @@ char	*get_next_line(int fd)
 	}
 	if (read_byte > 0)
 		save = ft_strjoin_gnl(save, buf);
+	else
+		_free_all(NULL, &buf);
 	return (_get_one_line(&save));
 }
