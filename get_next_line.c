@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/15 21:12:43 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/15 23:16:03 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,15 @@
 
 void _free_all(char **save_ptr, char **buf_ptr)
 {
-	char	*save;
-	char	*buf;
-
 	if (save_ptr != NULL)
 	{
-		save = *save_ptr;
-		free(save);
-		save = NULL;
+		free(*save_ptr);
+		*save_ptr = NULL;
 	}
 	if (buf_ptr != NULL)
 	{
-		buf = *buf_ptr;
-		free(buf);
-		buf = NULL;
+		free(*buf_ptr);
+		*buf_ptr = NULL;
 	}
 }
 
@@ -41,13 +36,17 @@ static char	*_get_one_line(char **save_ptr)
 		return (NULL);
 	save = *save_ptr;
 	if (!ft_strchr(save, '\n'))
-		return (save);
+	{
+		str_after_n = save;
+		*save_ptr = NULL;
+		return (str_after_n);
+	}
 	str_before_n = ft_strdup_to_c(save, '\n');
 	str_after_n = ft_strdup_to_c(ft_strchr(save, '\n') + 1, '\0');
-	_free_all(&save, NULL);
+	_free_all(save_ptr, NULL);
 	if (str_before_n == NULL || str_after_n == NULL)
 		return (NULL);
-	save = str_after_n;
+	*save_ptr = str_after_n;
 	return (str_before_n);
 }
 
@@ -68,13 +67,13 @@ char	*get_next_line(int fd)
 		save = ft_strjoin_gnl(save, buf);
 		buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 		read_byte = read(fd, buf, BUFFER_SIZE);
-		if (save == NULL || buf == NULL || read_byte < 0)
+		if (buf == NULL || read_byte < 0)
 		{
 			_free_all(&save, &buf);
 			return (NULL);
 		}
 		buf[read_byte] = '\0';
-	}
+	}	
 	save = ft_strjoin_gnl(save, buf);
 	return (_get_one_line(&save));
 }

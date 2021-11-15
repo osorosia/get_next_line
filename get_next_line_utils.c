@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:09:21 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/15 21:17:41 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/15 22:26:00 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,20 +81,29 @@ char	*ft_strjoin_gnl(char const *s1, char const *s2)
 	size_t	s1_len;
 	size_t	s2_len;
 	size_t	i;
+	size_t	j;
 
-	if (s1 == NULL || s2 == NULL)
+	if (s2 == NULL)
 		return (NULL);
 	s1_len = ft_strlen_to_c(s1, '\0');
 	s2_len = ft_strlen_to_c(s2, '\0');
 	str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
 	if (str == NULL)
+	{
+		free((char *)s1);
+		free((char *)s2);
 		return (NULL);
+	}
 	i = 0;
-	while (*s1 != '\0')
-		str[i++] = *(s1++);
-	while (*s2 != '\0')
-		str[i++] = *(s2++);
+	j = 0;
+	while (s1 && s1[j] != '\0')
+		str[i++] = s1[j++];
+	j = 0;
+	while (s2[j] != '\0')
+		str[i++] = s2[j++];
 	str[i] = '\0';
+	free((char *)s1);
+	free((char *)s2);
 	return (str);
 }
 
@@ -102,6 +111,8 @@ size_t	ft_strlen_to_c(const char *str, const char c)
 {
 	size_t	i;
 
+	if (str == NULL)
+		return (0);
 	i = 0;
 	while (str[i] != c)
 		i++;
