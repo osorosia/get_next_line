@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:09:21 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/15 22:26:00 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/15 23:32:05 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_strdup_to_c(const char *s1, char c)
 	size_t	i;
 
 	str_len = ft_strlen_to_c(s1, c);
-	str = (char *)malloc(sizeof(char) * str_len + 1);
+	str = (char *)malloc(sizeof(char) * str_len + 2);
 	if (str == NULL)
 		return (NULL);
 	i = 0;
@@ -42,7 +42,8 @@ char	*ft_strdup_to_c(const char *s1, char c)
 		str[i] = s1[i];
 		i++;
 	}
-	str[i] = '\0';
+	str[i] = c;
+	str[i + 1] = '\0';
 	return (str);
 }
 
