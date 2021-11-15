@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:09:21 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/15 23:32:05 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/15 23:49:24 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*ft_strjoin_gnl(char const *s1, char const *s2)
 	size_t	j;
 
 	if (s2 == NULL)
-		return (NULL);
+		return ((char *)s1);
 	s1_len = ft_strlen_to_c(s1, '\0');
 	s2_len = ft_strlen_to_c(s2, '\0');
 	str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
