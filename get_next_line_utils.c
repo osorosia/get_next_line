@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:09:21 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/15 23:49:24 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/16 00:23:44 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,35 +44,6 @@ char	*ft_strdup_to_c(const char *s1, char c)
 	}
 	str[i] = c;
 	str[i + 1] = '\0';
-	return (str);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*str;
-	size_t	s_len;
-	size_t	i;
-
-	if (s == NULL)
-		return (NULL);
-	while (start > 0 && *s != '\0')
-	{
-		s++;
-		start--;
-	}
-	s_len = ft_strlen_to_c(s, '\0');
-	if (len > s_len)
-		len = s_len;
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (str == NULL)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		str[i] = s[i];
-		i++;
-	}
-	str[i] = '\0';
 	return (str);
 }
 
