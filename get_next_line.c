@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/16 20:14:02 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/16 20:20:13 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static ssize_t	_read_gnl(int fd, char **save, char **buf)
 	if (*buf == NULL)
 		return (-1);
 	read_byte = read(fd, *buf, BUFFER_SIZE);
-	if (*buf == NULL || read_byte < 0)
+	if (read_byte < 0)
 		return (-1);
 	(*buf)[read_byte] = '\0';
 	return (read_byte);
