@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/16 17:43:43 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/16 18:01:30 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,22 @@ static char	*_get_one_line(char **save)
 	return (str_before_n);
 }
 
+static ssize_t	_read_gnl(int fd, char **save, char **buf)
+{
+	ssize_t	read_byte;
+
+	*save = ft_strjoin_gnl(*save, *buf);
+	*buf = (char *)malloc(sizeof(char) * ((size_t)BUFFER_SIZE + 1));
+	read_byte = read(fd, *buf, BUFFER_SIZE);
+	if (buf == NULL || read_byte < 0)
+	{
+		_free_all(save, buf);
+		return (-1);
+	}
+	*buf[read_byte] = '\0';
+	return (read_byte);
+}
+
 char	*get_next_line(int fd)
 {
 	char		*buf;
@@ -64,19 +80,13 @@ char	*get_next_line(int fd)
 	buf = NULL;
 	while (read_byte == BUFFER_SIZE && !ft_strchr(buf, '\n'))
 	{
-		save = ft_strjoin_gnl(save, buf);
-		buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		read_byte = read(fd, buf, BUFFER_SIZE);
-		if (buf == NULL || read_byte < 0)
-		{
-			_free_all(&save, &buf);
-			return (NULL);
-		}
-		buf[read_byte] = '\0';
+		read_byte = _read_gnl(fd, &save, &buf);
 	}
 	if (read_byte > 0)
 		save = ft_strjoin_gnl(save, buf);
-	else
+	if (read_byte == 0)
 		_free_all(NULL, &buf);
+	if (read_byte < 0)
+		return (NULL);
 	return (_get_one_line(&save));
 }
