@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/16 18:04:46 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/16 18:32:04 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static ssize_t	_read_gnl(int fd, char **save, char **buf)
 		_free_all(save, buf);
 		return (-1);
 	}
-	*buf[read_byte] = '\0';
+	(*buf)[read_byte] = '\0';
 	return (read_byte);
 }
 
