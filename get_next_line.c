@@ -6,13 +6,13 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/16 00:53:39 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/16 17:21:08 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	_free_all(char **save_ptr, char **buf_ptr)
+static void	_free_all(char **save_ptr, char **buf_ptr)
 {
 	if (save_ptr != NULL)
 	{
