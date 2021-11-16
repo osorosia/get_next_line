@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/16 20:34:25 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/16 20:58:45 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,28 @@ static void	_free_all(char **save, char **buf)
 		free(*buf);
 		*buf = NULL;
 	}
+}
+
+static bool	_strjoin_save_buf(char **save, char **buf)
+{
+	char	*save_new;
+
+	if (*save == NULL && *buf == NULL)
+		return (true);
+	if (*save == NULL)
+	{
+		*save = *buf;
+		*buf = NULL;
+		return (true);
+	}
+	if (*buf == NULL)
+		return (true);
+	save_new = ft_strjoin_gnl(*save, *buf);
+	_free_all(save, buf);
+	if (save_new == NULL)
+		return (false);
+	*save = save_new;
+	return (true);
 }
 
 static char	*_get_one_line(char **save)
@@ -53,13 +75,9 @@ static char	*_get_one_line(char **save)
 static ssize_t	_read_gnl(int fd, char **save, char **buf)
 {
 	ssize_t	read_byte;
-	char	*save_new;
 
-	save_new = ft_strjoin_gnl(*save, *buf);
-	if (save_new == NULL && (*save != NULL || *buf != NULL))
+	if (!_strjoin_save_buf(save, buf))
 		return (-1);
-	_free_all(save, buf);
-	*save = save_new;
 	*buf = (char *)malloc(sizeof(char) * ((size_t)BUFFER_SIZE + 1));
 	if (*buf == NULL)
 		return (-1);
@@ -74,7 +92,6 @@ char	*get_next_line(int fd)
 {
 	char		*buf;
 	static char	*save = NULL;
-	char		*save_new;
 	ssize_t		read_byte;
 
 	if (fd < 0 || FD_MAX <= fd || BUFFER_SIZE <= 0)
@@ -87,11 +104,8 @@ char	*get_next_line(int fd)
 		read_byte = _read_gnl(fd, &save, &buf);
 	if (read_byte > 0)
 	{
-		save_new = ft_strjoin_gnl(save, buf);
-		_free_all(&save, &buf);
-		if (save_new == NULL)
+		if (!_strjoin_save_buf(&save, &buf))
 			return (NULL);
-		save = save_new;
 	}
 	if (read_byte == 0)
 		_free_all(NULL, &buf);

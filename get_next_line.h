@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/16 00:23:56 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/16 20:52:10 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 # define GET_NEXT_LINE_H
 
 # include <stdio.h>
-# include <unistd.h>
+# include <stdbool.h>
 # include <stdlib.h>
+# include <unistd.h>
 
 # define FD_MAX 256
 
