@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/16 21:01:25 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/16 21:03:06 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*_get_one_line(char **save)
 	char	*str_before_n;
 	char	*str_after_n;
 
-	if (save == NULL)
+	if (save == NULL || *save == NULL)
 		return (NULL);
 	if (!ft_strchr(*save, '\n'))
 	{
