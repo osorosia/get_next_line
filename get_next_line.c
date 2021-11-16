@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/16 20:20:13 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/16 20:30:44 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ char	*get_next_line(int fd)
 {
 	char		*buf;
 	static char	*save = NULL;
+	char		*save_new;
 	ssize_t		read_byte;
 
 	if (fd < 0 || FD_MAX <= fd || BUFFER_SIZE <= 0)
@@ -85,7 +86,11 @@ char	*get_next_line(int fd)
 	while (read_byte == BUFFER_SIZE && !ft_strchr(buf, '\n'))
 		read_byte = _read_gnl(fd, &save, &buf);
 	if (read_byte > 0)
-		save = ft_strjoin_gnl(save, buf);
+	{
+		save_new = ft_strjoin_gnl(save, buf);
+		_free_all(&save, &buf);
+		save = save_new;
+	}
 	if (read_byte == 0)
 		_free_all(NULL, &buf);
 	if (read_byte < 0)
