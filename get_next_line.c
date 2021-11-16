@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/16 20:58:45 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/16 21:01:25 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	_strjoin_save_buf(char **save, char **buf)
 {
 	char	*save_new;
 
-	if (*save == NULL && *buf == NULL)
+	if (*buf == NULL)
 		return (true);
 	if (*save == NULL)
 	{
@@ -38,8 +38,6 @@ static bool	_strjoin_save_buf(char **save, char **buf)
 		*buf = NULL;
 		return (true);
 	}
-	if (*buf == NULL)
-		return (true);
 	save_new = ft_strjoin_gnl(*save, *buf);
 	_free_all(save, buf);
 	if (save_new == NULL)
