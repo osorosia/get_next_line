@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/22 19:51:41 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/22 20:05:58 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,25 +100,25 @@ static ssize_t	_read_gnl(int fd, char **save, char **buf)
 char	*get_next_line(int fd)
 {
 	char		*buf;
-	static char	*save = NULL;
+	static char	*save[FD_MAX] = {NULL};
 	ssize_t		read_byte;
 
 	if (fd < 0 || FD_MAX <= fd || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (ft_strchr(save, '\n'))
-		return (_get_one_line(&save));
+	if (ft_strchr(save[fd], '\n'))
+		return (_get_one_line(&save[fd]));
 	read_byte = BUFFER_SIZE;
 	buf = NULL;
 	while (read_byte == BUFFER_SIZE && !ft_strchr(buf, '\n'))
-		read_byte = _read_gnl(fd, &save, &buf);
+		read_byte = _read_gnl(fd, &save[fd], &buf);
 	if (read_byte > 0)
 	{
-		if (!_strjoin_save_buf(&save, &buf))
+		if (!_strjoin_save_buf(&save[fd], &buf))
 			return (NULL);
 	}
 	if (read_byte == 0)
 		_free_all(NULL, &buf);
 	if (read_byte < 0)
 		return (NULL);
-	return (_get_one_line(&save));
+	return (_get_one_line(&save[fd]));
 }
