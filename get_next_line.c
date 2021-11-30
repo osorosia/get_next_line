@@ -26,7 +26,7 @@ static void	_free_all(char **save, char **buf)
 	}
 }
 
-static bool	_strjoin_save_buf(char **save, char **buf)
+static bool	_strjoin_and_free(char **save, char **buf)
 {
 	char	*save_new;
 
@@ -38,7 +38,7 @@ static bool	_strjoin_save_buf(char **save, char **buf)
 		*buf = NULL;
 		return (true);
 	}
-	save_new = ft_strjoin_gnl(*save, *buf);
+	save_new = ft_strjoin(*save, *buf);
 	_free_all(save, buf);
 	if (save_new == NULL)
 		return (false);
@@ -79,20 +79,14 @@ static ssize_t	_read_gnl(int fd, char **save, char **buf)
 {
 	ssize_t	read_byte;
 
-	if (!_strjoin_save_buf(save, buf))
+	if (!_strjoin_and_free(save, buf))
 		return (-1);
 	*buf = (char *)malloc(sizeof(char) * ((size_t)BUFFER_SIZE + 1));
 	if (*buf == NULL)
-	{
-		_free_all(save, NULL);
 		return (-1);
-	}
 	read_byte = read(fd, *buf, BUFFER_SIZE);
 	if (read_byte < 0)
-	{
-		_free_all(save, buf);
 		return (-1);
-	}
 	(*buf)[read_byte] = '\0';
 	return (read_byte);
 }
@@ -113,12 +107,12 @@ char	*get_next_line(int fd)
 		read_byte = _read_gnl(fd, &save, &buf);
 	if (read_byte > 0)
 	{
-		if (!_strjoin_save_buf(&save, &buf))
+		if (!_strjoin_and_free(&save, &buf))
 			return (NULL);
 	}
 	if (read_byte == 0)
 		_free_all(NULL, &buf);
 	if (read_byte < 0)
-		return (NULL);
+		_free_all(&save, &buf);
 	return (_get_one_line(&save));
 }
