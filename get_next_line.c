@@ -97,7 +97,7 @@ char	*get_next_line(int fd)
 	static char	*save = NULL;
 	ssize_t		read_byte;
 
-	if (fd < 0 || FD_MAX <= fd || BUFFER_SIZE <= 0)
+	if (fd < 0 || FD_MAX <= fd || (ssize_t)BUFFER_SIZE <= 0 || (ssize_t)BUFFER_SIZE > SSIZE_MAX)
 		return (NULL);
 	if (ft_strchr(save, '\n'))
 		return (_get_one_line(&save));
