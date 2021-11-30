@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/16 21:53:27 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/30 11:23:31 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static ssize_t	_read_gnl(int fd, char **save, char **buf)
 
 	if (!_strjoin_and_free(save, buf))
 		return (-1);
-	*buf = (char *)malloc(sizeof(char) * ((size_t)BUFFER_SIZE + 1));
+	*buf = (char *)malloc(sizeof(char) * ((ssize_t)BUFFER_SIZE + 1));
 	if (*buf == NULL)
 		return (-1);
 	read_byte = read(fd, *buf, BUFFER_SIZE);
@@ -93,15 +93,16 @@ static ssize_t	_read_gnl(int fd, char **save, char **buf)
 
 char	*get_next_line(int fd)
 {
-	char		*buf;
 	static char	*save = NULL;
+	char		*buf;
 	ssize_t		read_byte;
 
-	if (fd < 0 || FD_MAX <= fd || (ssize_t)BUFFER_SIZE <= 0 || (ssize_t)BUFFER_SIZE > SSIZE_MAX)
+	if (fd < 0 || FD_MAX <= fd
+		|| (ssize_t)BUFFER_SIZE <= 0 || SSIZE_MAX < (ssize_t)BUFFER_SIZE)
 		return (NULL);
 	if (ft_strchr(save, '\n'))
 		return (_get_one_line(&save));
-	read_byte = BUFFER_SIZE;
+	read_byte = (ssize_t)BUFFER_SIZE;
 	buf = NULL;
 	while (read_byte == BUFFER_SIZE && !ft_strchr(buf, '\n'))
 		read_byte = _read_gnl(fd, &save, &buf);
