@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/22 20:05:58 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/30 11:47:41 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	_free_all(char **save, char **buf)
 	}
 }
 
-static bool	_strjoin_save_buf(char **save, char **buf)
+static bool	_strjoin_and_free(char **save, char **buf)
 {
 	char	*save_new;
 
@@ -38,7 +38,7 @@ static bool	_strjoin_save_buf(char **save, char **buf)
 		*buf = NULL;
 		return (true);
 	}
-	save_new = ft_strjoin_gnl(*save, *buf);
+	save_new = ft_strjoin(*save, *buf);
 	_free_all(save, buf);
 	if (save_new == NULL)
 		return (false);
@@ -79,46 +79,41 @@ static ssize_t	_read_gnl(int fd, char **save, char **buf)
 {
 	ssize_t	read_byte;
 
-	if (!_strjoin_save_buf(save, buf))
+	if (!_strjoin_and_free(save, buf))
 		return (-1);
-	*buf = (char *)malloc(sizeof(char) * ((size_t)BUFFER_SIZE + 1));
+	*buf = (char *)malloc(sizeof(char) * ((ssize_t)BUFFER_SIZE + 1));
 	if (*buf == NULL)
-	{
-		_free_all(save, NULL);
 		return (-1);
-	}
 	read_byte = read(fd, *buf, BUFFER_SIZE);
 	if (read_byte < 0)
-	{
-		_free_all(save, buf);
 		return (-1);
-	}
 	(*buf)[read_byte] = '\0';
 	return (read_byte);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*buf;
 	static char	*save[FD_MAX] = {NULL};
+	char		*buf;
 	ssize_t		read_byte;
 
-	if (fd < 0 || FD_MAX <= fd || BUFFER_SIZE <= 0)
+	if (fd < 0 || FD_MAX <= fd
+		|| (ssize_t)BUFFER_SIZE <= 0 || SSIZE_MAX < (ssize_t)BUFFER_SIZE)
 		return (NULL);
 	if (ft_strchr(save[fd], '\n'))
 		return (_get_one_line(&save[fd]));
-	read_byte = BUFFER_SIZE;
+	read_byte = (ssize_t)BUFFER_SIZE;
 	buf = NULL;
 	while (read_byte == BUFFER_SIZE && !ft_strchr(buf, '\n'))
 		read_byte = _read_gnl(fd, &save[fd], &buf);
 	if (read_byte > 0)
 	{
-		if (!_strjoin_save_buf(&save[fd], &buf))
+		if (!_strjoin_and_free(&save[fd], &buf))
 			return (NULL);
 	}
 	if (read_byte == 0)
 		_free_all(NULL, &buf);
 	if (read_byte < 0)
-		return (NULL);
+		_free_all(&save[fd], &buf);
 	return (_get_one_line(&save[fd]));
 }

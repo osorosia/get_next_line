@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:09:21 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/22 19:51:34 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/11/30 11:43:48 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*ft_strdup_to_c(const char *s1, char c)
 	return (str);
 }
 
-char	*ft_strjoin_gnl(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
 	size_t	s1_len;
@@ -62,10 +62,10 @@ char	*ft_strjoin_gnl(char const *s1, char const *s2)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (s1[j] != '\0')
+	while (j < s1_len)
 		str[i++] = s1[j++];
 	j = 0;
-	while (s2[j] != '\0')
+	while (j < s2_len)
 		str[i++] = s2[j++];
 	str[i] = '\0';
 	return (str);
