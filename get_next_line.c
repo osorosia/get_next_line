@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/11/30 11:23:31 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/12/03 05:30:45 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static ssize_t	_read_gnl(int fd, char **save, char **buf)
 	*buf = (char *)malloc(sizeof(char) * ((ssize_t)BUFFER_SIZE + 1));
 	if (*buf == NULL)
 		return (-1);
-	read_byte = read(fd, *buf, BUFFER_SIZE);
+	read_byte = read(fd, *buf, (ssize_t)BUFFER_SIZE);
 	if (read_byte < 0)
 		return (-1);
 	(*buf)[read_byte] = '\0';
@@ -104,7 +104,7 @@ char	*get_next_line(int fd)
 		return (_get_one_line(&save));
 	read_byte = (ssize_t)BUFFER_SIZE;
 	buf = NULL;
-	while (read_byte == BUFFER_SIZE && !ft_strchr(buf, '\n'))
+	while (read_byte == (ssize_t)BUFFER_SIZE && !ft_strchr(buf, '\n'))
 		read_byte = _read_gnl(fd, &save, &buf);
 	if (read_byte > 0)
 	{
