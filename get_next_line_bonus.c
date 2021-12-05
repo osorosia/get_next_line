@@ -6,7 +6,7 @@
 /*   By: rnishimo <rnishimo@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 09:08:26 by rnishimo          #+#    #+#             */
-/*   Updated: 2021/12/03 05:32:37 by rnishimo         ###   ########.fr       */
+/*   Updated: 2021/12/05 05:26:04 by rnishimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ char	*get_next_line(int fd)
 	ssize_t		read_byte;
 
 	if (fd < 0 || FD_MAX <= fd
-		|| (ssize_t)BUFFER_SIZE <= 0 || SSIZE_MAX < (ssize_t)BUFFER_SIZE)
+		|| (ssize_t)BUFFER_SIZE <= 0
+		|| (ssize_t)SSIZE_MAX < (ssize_t)BUFFER_SIZE)
 		return (NULL);
 	if (ft_strchr(save[fd], '\n'))
 		return (_get_one_line(&save[fd]));
